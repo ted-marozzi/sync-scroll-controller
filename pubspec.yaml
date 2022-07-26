@@ -1,7 +1,7 @@
 name: sync_scroll_controller
 description: A new Flutter package project.
 version: 0.0.1
-homepage:
+homepage: https://github.com/ted-marozzi/sync-scroll-controller
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
