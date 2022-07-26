@@ -4,6 +4,8 @@
 // license that can be found in the LICENSE file or at
 // https://developers.google.com/open-source/licenses/bsd
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sync_scroll_controller/sync_scroll_controller.dart';
@@ -134,7 +136,7 @@ void main() {
     });
 
     testWidgets('offset throws for empty group', (tester) async {
-      await tester.pumpWidget(TestEmptyGroup());
+      await tester.pumpWidget(const TestEmptyGroup());
 
       final state =
           tester.state<TestEmptyGroupState>(find.byType(TestEmptyGroup));
@@ -313,6 +315,8 @@ void main() {
 }
 
 class TestEmptyGroup extends StatefulWidget {
+  const TestEmptyGroup({Key? key}) : super(key: key);
+
   @override
   TestEmptyGroupState createState() => TestEmptyGroupState();
 }
@@ -328,11 +332,16 @@ class TestEmptyGroupState extends State<TestEmptyGroup> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox();
+    return const SizedBox();
   }
 }
 
 class Test extends StatefulWidget {
+  late final double? _initialScrollOffset;
+
+  Test({Key? key, double? initialScrollOffset = -1}) : super(key: key) {
+    _initialScrollOffset = initialScrollOffset;
+  }
   @override
   TestState createState() => TestState();
 }
@@ -346,7 +355,10 @@ class TestState extends State<Test> {
   @override
   void initState() {
     super.initState();
-    _controllers = SyncScrollControllerGroup();
+    _controllers = widget._initialScrollOffset == -1
+        ? SyncScrollControllerGroup()
+        : SyncScrollControllerGroup(
+            initialScrollOffset: widget._initialScrollOffset);
     _letters = _controllers.addAndGet();
     _numbers = _controllers.addAndGet();
   }
@@ -394,7 +406,8 @@ class TestState extends State<Test> {
 class Tile extends StatelessWidget {
   final String caption;
 
-  Tile(this.caption);
+  // ignore: prefer_const_constructors_in_immutables
+  Tile(this.caption, {Key? key}) : super(key: key);
 
   @override
   Widget build(_) => Container(
