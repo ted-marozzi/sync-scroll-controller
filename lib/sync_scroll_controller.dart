@@ -20,11 +20,10 @@ import 'package:flutter/rendering.dart';
 /// Without the keys, Flutter may reuse a controller after it has been disposed,
 /// which can cause the controller offsets to fall out of sync.
 class SyncScrollControllerGroup {
-  SyncScrollControllerGroup({double? initialScrollOffset}) {
-    _initialScrollOffset = initialScrollOffset ?? 0.0;
+  SyncScrollControllerGroup({this.initialOffset = 0.0}) {
     _offsetNotifier = _SyncScrollControllerGroupOffsetNotifier(this);
   }
-  late double _initialScrollOffset;
+  final double initialOffset;
   final _allControllers = <_SyncScrollController>[];
 
   late _SyncScrollControllerGroupOffsetNotifier _offsetNotifier;
@@ -42,7 +41,7 @@ class SyncScrollControllerGroup {
   /// Creates a new controller that is Sync to any existing ones.
   ScrollController addAndGet() {
     final initialScrollOffset = _attachedControllers.isEmpty
-        ? _initialScrollOffset
+        ? initialOffset
         : _attachedControllers.first.position.pixels;
     final controller =
         _SyncScrollController(this, initialScrollOffset: initialScrollOffset);
