@@ -1,6 +1,6 @@
 name: sync_scroll_controller
-description: A new Flutter package project.
-version: 0.0.1
+description: Simply Synced Scroll Controllers
+version: 1.0.0
 homepage: https://github.com/ted-marozzi/sync-scroll-controller
 
 environment:
